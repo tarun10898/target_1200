@@ -1,52 +1,48 @@
 
----
 
-## 🔁 Bubble Sort — Brute Force Version
+## 🔁 What Is Bubble Sort?
 
-### 💡 Concept:
-Bubble Sort compares adjacent elements and **swaps them** if they’re in the wrong order. With each pass, the largest unsorted element “bubbles up” to its correct position — like foam rising to the surface.
+Bubble Sort is a simple **comparison-based** algorithm where adjacent elements are repeatedly swapped if they’re in the wrong order. It “bubbles” the largest unsorted element to its correct position in each pass.
 
 ---
 
-### 🧠 Step-by-Step Algorithm:
-1. Start from the first element.
-2. Compare every pair of adjacent items.
-3. Swap if the left item is greater than the right.
-4. After each pass, the **largest unsorted item is placed correctly** at the end.
-5. Repeat `n` times for an array of `n` elements.
+## 🐌 Brute Force Bubble Sort
 
----
+### 🔍 Description
+- Compares every pair in every iteration.
+- No checks for early stopping—even if the array is already sorted.
 
-### 🧪 Code — Basic Bubble Sort (Multiple Passes, No Optimization)
-
+### 🧾 Code
 ```python
-def bubble_sort(arr):
-    n = len(arr)
+def bubble_sort_brute(arr, n):
     for i in range(n):
-        for j in range(0, n - i - 1):  # Don't re-check sorted part
+        for j in range(0, n - 1):
             if arr[j] > arr[j + 1]:
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
     return arr
+
+if __name__ == "__main__":
+    n = int(input("Enter number of elements: "))
+    arr = list(map(int, input("Enter elements: ").strip().split()))[:n]
+    print("Brute Force:", bubble_sort_brute(arr, n))
 ```
 
-### 📊 Example Walkthrough:
-Input: `[5, 1, 4, 2, 8]`
-
-- Pass 1 → `[1, 4, 2, 5, 8]`
-- Pass 2 → `[1, 2, 4, 5, 8]`
-- Pass 3 → `[1, 2, 4, 5, 8]` (no swaps needed)
-- Pass 4 → early exit possible, but this version continues
+### 📊 Time & Space
+- Time: O(n²) — always compares all pairs
+- Space: O(1) — no extra storage
+- ❌ No shortcut for sorted inputs
 
 ---
 
-## ⚡ Optimized Bubble Sort — Smarter Approach
+## ⚡ Optimized Bubble Sort with Early Stop
 
-### 🔧 What's Better?
-Add a **`swapped` flag** to detect whether any swaps happened during a pass. If no swaps → array is sorted → exit early.
+### 🔍 Description
+- Adds a `swapped` flag.
+- Stops early if no swaps occur—great for nearly sorted arrays.
 
+### ✅ Code (Your Improved Version)
 ```python
-def optimized_bubble_sort(arr):
-    n = len(arr)
+def bubble_sort(arr, n):
     for i in range(n):
         swapped = False
         for j in range(0, n - i - 1):
@@ -54,22 +50,35 @@ def optimized_bubble_sort(arr):
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
                 swapped = True
         if not swapped:
-            break  # No swaps = array sorted early
+            print("Nothing to swap. Already sorted.")
+            break
     return arr
+
+if __name__ == "__main__":
+    n = int(input("Enter number of elements: "))
+    arr = list(map(int, input("Enter elements: ").strip().split()))[:n]
+    print("Optimized:", bubble_sort(arr, n))
 ```
 
-This avoids wasting time on already sorted or nearly sorted arrays — an edge that makes a real difference when scaling!
+### 📊 Time & Space
+| Case      | Time Complexity |
+|-----------|------------------|
+| Best (Sorted) | O(n)            |
+| Worst        | O(n²)           |
+| Average      | O(n²)           |
+
+- Space: O(1)
+- ✅ Much better for sorted or nearly sorted arrays
 
 ---
 
-## 📊 Time & Space Complexity
+## 📌 Which to Use?
 
-| Scenario        | Time Complexity | Description                                  |
-|-----------------|-----------------|----------------------------------------------|
-| **Best Case**   | O(n)            | If array is already sorted (with `swapped`)  |
-| **Average Case**| O(n²)           | Many out-of-order pairs                      |
-| **Worst Case**  | O(n²)           | Completely reversed array                    |
-| **Space**       | O(1)            | In-place sorting, no extra memory needed     |
+| Situation                   | Use This Sort        | Reason                             |
+|-----------------------------|----------------------|------------------------------------|
+| Learning basics             | Bubble (Brute Force) | Easy to understand                 |
+| Slightly shuffled array     | Optimized Bubble     | Early stopping saves time          |
+| Large datasets              | ❌ Avoid Bubble Sort  | Prefer Quick or Merge sort         |
 
 ---
 
